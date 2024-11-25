@@ -105,10 +105,6 @@ log.debug("user details fetched successfully");
             ApiResponse<EmployeeDto> empApiResponse = restClient.get()
                     .uri("employee/{id}",empId)
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,(req,res) -> {
-                        System.out.println(new String(res.getBody().readAllBytes()));
-                        throw new ResourceNotFoundException("could not create the employee");
-                    })
                     .body(new ParameterizedTypeReference<>() {
                     });
 
