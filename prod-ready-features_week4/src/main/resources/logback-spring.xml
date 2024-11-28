@@ -3,7 +3,7 @@
 
     <!-- Define properties -->
     <property name="LOG_PATH" value="./logs" />
-    <property name="LOG_FILE_NAME" value="Appication1.log" />
+    <property name="LOG_FILE_NAME" value="Appication.log" />
     <property name="MAX_LOG_HISTORY" value="30" />
     <property name="MAX_LOG_FILE_SIZE" value="50KB" />
 
