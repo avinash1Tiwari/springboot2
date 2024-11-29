@@ -12,6 +12,7 @@ import java.util.List;
 
 public class User implements UserDetails {                     // UserDetails comes from springframework.security.core
 //commit from 70
+//    again commit from 70
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
