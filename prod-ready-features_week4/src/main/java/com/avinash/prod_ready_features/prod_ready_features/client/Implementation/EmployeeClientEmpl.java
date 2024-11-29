@@ -5,6 +5,8 @@ import com.avinash.prod_ready_features.prod_ready_features.client.EmployeeClient
 import com.avinash.prod_ready_features.prod_ready_features.dto.EmployeeDto;
 import com.avinash.prod_ready_features.prod_ready_features.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
