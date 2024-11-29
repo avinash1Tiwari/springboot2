@@ -31,7 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-#src/main/resources/application.properties
-#
-#prod-ready-features_week4/logs
-#src/main/resources/logback-spring.xml
+prod-ready-features_week4/application.properties
+prod-ready-features_week4/logs
