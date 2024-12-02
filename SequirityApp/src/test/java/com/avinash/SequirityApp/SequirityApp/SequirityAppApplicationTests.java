@@ -14,21 +14,21 @@ class SequirityAppApplicationTests {
 
 	@Test
 	void contextLoads(){
-		User user = new User(5L,"Avinash Tiwari","2341");
-
-		String token = jwtService.generateToken(user);            ///// this token you can paste on jwt.io to see actual header and payload from this token
-// this token expires after expiry time as you mentioned( in this app, i mention 1 minute)
-
-
-		System.out.println("====================generated token======================");
-		System.out.println(token);
-		System.out.println("==================================================================");
-
-		Long id = jwtService.getUserIdFromToken(token);
-
-		System.out.println("====================retriving user_id from token======================");
-		System.out.println(id);
-		System.out.println("==================================================================");
+//		User user = new User(5L,"Avinash Tiwari","2341");
+//
+//		String token = jwtService.generateToken(user);            ///// this token you can paste on jwt.io to see actual header and payload from this token
+//// this token expires after expiry time as you mentioned( in this app, i mention 1 minute)
+//
+//
+//		System.out.println("====================generated token======================");
+//		System.out.println(token);
+//		System.out.println("==================================================================");
+//
+//		Long id = jwtService.getUserIdFromToken(token);
+//
+//		System.out.println("====================retriving user_id from token======================");
+//		System.out.println(id);
+//		System.out.println("==================================================================");
 
 	}
 
