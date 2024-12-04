@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @Audited
+@ToString    ///// to convert an java object into string so that we can read user detail.s
 public class User implements UserDetails {                     // UserDetails comes from springframework.security.core
 //commit from 70
 //    again commit from 70
