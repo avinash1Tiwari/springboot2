@@ -25,6 +25,11 @@ public class UserService implements UserDetailsService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
+    public User getUserById(Long userId) {
+
+        return userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("user with given userId : " + userId +"not found"));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
