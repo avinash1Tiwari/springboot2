@@ -1,10 +1,7 @@
 package com.avinash.SequirityApp.SequirityApp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.envers.Audited;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,10 +10,9 @@ import java.util.Collection;
 import java.util.List;
 @Entity
 @Table(name = "app_user")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@RequiredArgsConstructor
 @Audited
 public class User implements UserDetails {                     // UserDetails comes from springframework.security.core
 //commit from 70
@@ -29,6 +25,9 @@ public class User implements UserDetails {                     // UserDetails co
     private String email;
 
     private String password;
+
+    private String name;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
