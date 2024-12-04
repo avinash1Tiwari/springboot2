@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @RestControllerAdvice
@@ -26,6 +28,18 @@ public class GlobalExceptionHandler {
 
         return buildErrorResponseEntity(apiError);
     }
+
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiError> hanleAuthenticationException(AuthenticationException ex){
+
+        List<String> subErrors = new ArrayList<>();
+        ApiError apiError = new ApiError(ex.getLocalizedMessage(),HttpStatus.UNAUTHORIZED,subErrors);
+        return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
+    }
+
+
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleInternalServerError(Exception exception)           // => Here we are returning ErrorResponse as instance of ApiResponse.
@@ -123,6 +137,10 @@ public class GlobalExceptionHandler {
 
         return buildErrorResponseEntity(apiError);
     }
+
+
+
+
 
 
 
