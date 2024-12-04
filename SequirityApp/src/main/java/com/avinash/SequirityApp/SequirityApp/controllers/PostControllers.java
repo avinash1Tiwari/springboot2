@@ -23,6 +23,12 @@ public class PostControllers {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
+    @GetMapping(path = "/{postId}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable Long postId)
+    {
+        return ResponseEntity.ok(postService.getPostById(postId));
+    }
+
     @PostMapping(path = "create")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto inputPost)
     {

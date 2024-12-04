@@ -3,15 +3,20 @@ package com.avinash.SequirityApp.SequirityApp.services;
 
 import com.avinash.SequirityApp.SequirityApp.dto.PostDto;
 import com.avinash.SequirityApp.SequirityApp.entities.PostEntity;
+import com.avinash.SequirityApp.SequirityApp.entities.User;
+import com.avinash.SequirityApp.SequirityApp.exception.ResourceNotFoundException;
 import com.avinash.SequirityApp.SequirityApp.repositories.PostRepositories;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostServiceImplementation implements PostService {
@@ -97,6 +102,19 @@ public class PostServiceImplementation implements PostService {
         return modelMapper.map(savedPost, PostDto.class);
 
 
+    }
+
+    @Override
+    public PostDto getPostById(Long postId) {
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();    //// used to get user-details as we set it in JwtService =>    new UsernamePasswordAuthenticationToken(user,null,null);
+log.info("=====================================================================");
+        log.info("user : {} ",user);
+log.info("=====================================================================");
+
+        PostEntity post = postRepositories.findById(postId).orElseThrow(()-> new ResourceNotFoundException("post with given postId : " + postId + " not exists"));
+
+        return modelMapper.map(post,PostDto.class);
     }
 
 }
