@@ -33,7 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = requestTokenHeader.split("Bearer")[1];    //// token comes like "Bearer asfjfklvfl,lf"
+        String token = requestTokenHeader.split("Bearer ")[1];    //// token comes like "Bearer asfjfklvfl,lf"
 
         Long userId = jwtService.getUserIdFromToken(token);
 
@@ -47,7 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     new WebAuthenticationDetailsSource().buildDetails(request)
             );
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);      //// add this user in spring security context-holder.
         }
 
         filterChain.doFilter(request,response);
