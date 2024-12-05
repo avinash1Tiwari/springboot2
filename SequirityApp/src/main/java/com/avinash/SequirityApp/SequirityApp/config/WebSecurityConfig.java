@@ -38,11 +38,11 @@ public class WebSecurityConfig {
         httpSecurity.
                 authorizeHttpRequests(auth -> auth
                         .requestMatchers("/posts","/error","/public/**","/auth/**").permitAll()
-                        .requestMatchers("/posts/**").hasAnyRole("USER")
+//                        .requestMatchers("/posts/**").hasAnyRole("USER")
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);     ///// custom filter
 
 //                .formLogin(Customizer.withDefaults());
 
