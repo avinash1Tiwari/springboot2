@@ -2,13 +2,15 @@ package com.avinash.SequirityApp.SequirityApp.advices;
 
 
 import com.avinash.SequirityApp.SequirityApp.exception.ResourceNotFoundException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.naming.AuthenticationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,12 +33,37 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ApiError> hanleAuthenticationException(AuthenticationException ex){
+    public ResponseEntity<ApiError> hanleAuthenticationException( AuthenticationException ex){
 
         List<String> subErrors = new ArrayList<>();
-        ApiError apiError = new ApiError(ex.getLocalizedMessage(),HttpStatus.UNAUTHORIZED,subErrors);
+//        ApiError apiError = new ApiError(ex.getLocalizedMessage(),HttpStatus.UNAUTHORIZED,subErrors);
+        ApiError apiError = new ApiError(ex.getMessage(),HttpStatus.UNAUTHORIZED,subErrors);
+
+        System.out.println("===========================apierror=====================================");
+        System.out.println(apiError);
+        System.out.println("===========================apierror=====================================");
         return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
     }
+
+
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ApiError> hanleJwtException( JwtException ex){
+
+        List<String> subErrors = new ArrayList<>();
+//        ApiError apiError = new ApiError(ex.getLocalizedMessage(),HttpStatus.UNAUTHORIZED,subErrors);
+        ApiError apiError = new ApiError(ex.getMessage(),HttpStatus.UNAUTHORIZED,subErrors);
+
+        System.out.println("===========================apierror=====================================");
+        System.out.println(apiError);
+        System.out.println("===========================apierror=====================================");
+        return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
+    }
+
+
+
+
+
 
 
 
