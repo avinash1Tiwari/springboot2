@@ -1,19 +1,17 @@
 package com.avinash.SequirityApp.SequirityApp.config;
 
 import com.avinash.SequirityApp.SequirityApp.filters.JwtAuthFilter;
+import com.avinash.SequirityApp.SequirityApp.handlers.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
@@ -23,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -37,12 +36,16 @@ public class WebSecurityConfig {
 
         httpSecurity.
                 authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts","/error","/public/**","/auth/**").permitAll()
+                        .requestMatchers("/posts","/error","/public/**","/auth/**","/home.html").permitAll()
 //                        .requestMatchers("/posts/**").hasAnyRole("USER")
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);     ///// custom filter
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)     ///// custom filter
+                .oauth2Login(oauth2Config -> oauth2Config
+                        .failureUrl("/login?error=true")
+                        .successHandler(oAuth2SuccessHandler)
+                );     ////for googleAuth login functionality
 
 //                .formLogin(Customizer.withDefaults());
 
