@@ -12,8 +12,11 @@ import java.util.List;
 @Table(name = "app_user")
 @Getter
 @Setter
-@RequiredArgsConstructor
+
+@NoArgsConstructor      // For JPA
+@AllArgsConstructor
 @Audited
+@Builder
 @ToString    ///// to convert an java object into string so that we can read user detail.s
 public class User implements UserDetails {                     // UserDetails comes from springframework.security.core
 //commit from 70
