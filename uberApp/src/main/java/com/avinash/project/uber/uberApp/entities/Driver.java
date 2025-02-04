@@ -12,13 +12,13 @@ public class Driver {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")                      //// in Rider table, column name = user_id = primary key of User-table.
+    @CollectionTable(name = "user_role_mapping", joinColumns = @JoinColumn(name = "user_id"))               //// in Driver table, column name = user_id = primary key of User-table.
     private User user;
 
     private Double rating;
 
     private Boolean is_available;
 
-    @Column(columnDefinition = "Geometry(Point,4326")          // 4326 specifies we are talking about earth geometry
+    @Column(columnDefinition = "Geometry(Point,4326)" )         // 4326 specifies we are talking about earth geometry
     Point currentLocation;
 }
