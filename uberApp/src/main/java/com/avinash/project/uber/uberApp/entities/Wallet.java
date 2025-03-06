@@ -1,11 +1,14 @@
 package com.avinash.project.uber.uberApp.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
-
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Wallet {
 
     @Id

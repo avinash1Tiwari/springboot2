@@ -4,11 +4,19 @@ import com.avinash.project.uber.uberApp.dto.DriverDto;
 import com.avinash.project.uber.uberApp.dto.RideDto;
 import com.avinash.project.uber.uberApp.dto.RiderDto;
 import com.avinash.project.uber.uberApp.services.DriverService;
+import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
+@Data
+@Getter
+
+@RequiredArgsConstructor
 public class DriverServiceImpl implements DriverService {
     @Override
     public RiderDto acceptRide(Long rideId) {

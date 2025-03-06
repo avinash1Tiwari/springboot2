@@ -2,9 +2,13 @@ package com.avinash.project.uber.uberApp.entities;
 
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.locationtech.jts.geom.Point;
 
 @Entity
+@Data
+@RequiredArgsConstructor
+
 public class Driver {
 
     @Id
@@ -16,6 +20,8 @@ public class Driver {
     private User user;
 
     private Double rating;
+
+    private String vehicleId;
 
     private Boolean is_available;
 

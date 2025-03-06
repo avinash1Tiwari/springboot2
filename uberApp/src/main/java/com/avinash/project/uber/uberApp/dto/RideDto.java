@@ -3,10 +3,14 @@ package com.avinash.project.uber.uberApp.dto;
 import com.avinash.project.uber.uberApp.entities.enums.PaymentMethod;
 import com.avinash.project.uber.uberApp.entities.enums.RideRequestStatus;
 
+import lombok.*;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RideDto {
 
     private Long id;
@@ -20,6 +24,7 @@ public class RideDto {
 
     private LocalDateTime rideRequest;
 
+    private String otp;
 
     private RiderDto rider;
 
