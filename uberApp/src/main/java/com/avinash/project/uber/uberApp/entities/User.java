@@ -2,13 +2,15 @@ package com.avinash.project.uber.uberApp.entities;
 
 import com.avinash.project.uber.uberApp.entities.enums.Role;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
 @Entity
-@Table(name = "uber_app_users")
+@Data
+@Table(name = "uber_users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id

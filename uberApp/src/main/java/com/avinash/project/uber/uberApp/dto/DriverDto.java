@@ -1,11 +1,10 @@
 package com.avinash.project.uber.uberApp.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 @Data
+
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class DriverDto {
