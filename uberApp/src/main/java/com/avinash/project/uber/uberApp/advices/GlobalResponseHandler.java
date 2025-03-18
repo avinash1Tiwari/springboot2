@@ -25,7 +25,12 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+
         if(body instanceof ApiResponse<?>){
+            return body;
+        }
+
+        if(body instanceof String){
             return body;
         }
 
