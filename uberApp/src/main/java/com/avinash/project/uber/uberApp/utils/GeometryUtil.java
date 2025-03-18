@@ -10,7 +10,7 @@ public class GeometryUtil {
 
     public static Point createPoint(PointDto pointDto)
     {
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(),4326);
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(),4326);   /// SRID = 4326 => points to earth's glob
 
         Coordinate coordinates = new Coordinate(pointDto.getCoordinates()[0],pointDto.getCoordinates()[1] );
 

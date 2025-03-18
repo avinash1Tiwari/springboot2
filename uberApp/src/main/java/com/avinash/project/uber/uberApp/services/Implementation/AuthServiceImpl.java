@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 @Data
-@AllArgsConstructor
-//hello
 @RequiredArgsConstructor
 @Service
 public class AuthServiceImpl implements AuthService {
