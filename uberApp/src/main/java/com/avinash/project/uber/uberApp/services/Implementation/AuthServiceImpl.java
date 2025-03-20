@@ -6,6 +6,7 @@ import com.avinash.project.uber.uberApp.dto.UserDto;
 import com.avinash.project.uber.uberApp.entities.Rider;
 import com.avinash.project.uber.uberApp.entities.User;
 import com.avinash.project.uber.uberApp.entities.enums.Role;
+import com.avinash.project.uber.uberApp.exceptions.RuntimeConflictException;
 import com.avinash.project.uber.uberApp.repositories.UserRepository;
 import com.avinash.project.uber.uberApp.services.AuthService;
 import com.avinash.project.uber.uberApp.services.RiderService;
@@ -22,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final RiderService riderService;
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     public String login(String username, String password) {
@@ -33,20 +34,18 @@ public class AuthServiceImpl implements AuthService {
     public UserDto signUp(SignUpDto signUpDto) {
 
         User user = userRepository.findByEmail(signUpDto.getEmail());
-
         if(user != null)
-        {
-            throw new RuntimeException("user already exist with given email_id : " + signUpDto.getEmail());
-        }
+            throw new RuntimeConflictException("Cannot signup, User already exists with email "+signUpDto.getEmail());
 
-        User mappedUser = modelMapper.map(signUpDto,User.class);
-        mappedUser.setUser_roles(Set.of(Role.RIDER));              //// setting user-role as 'RIDER' by default
+        User mappedUser = modelMapper.map(signUpDto, User.class);
+        mappedUser.setUser_roles(Set.of(Role.RIDER));
         User savedUser = userRepository.save(mappedUser);
 
-        Rider rider = riderService.createNewRider(savedUser);
-//        ADD WALLET RELATED SERVICES
+//        create user related entities
+        riderService.createNewRider(savedUser);
+//        TODO add wallet related service here
 
-        return modelMapper.map(savedUser,UserDto.class);
+        return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override

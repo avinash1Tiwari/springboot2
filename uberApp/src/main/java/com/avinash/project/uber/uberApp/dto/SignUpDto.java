@@ -1,7 +1,12 @@
 package com.avinash.project.uber.uberApp.dto;
 
 
+import com.avinash.project.uber.uberApp.entities.enums.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
