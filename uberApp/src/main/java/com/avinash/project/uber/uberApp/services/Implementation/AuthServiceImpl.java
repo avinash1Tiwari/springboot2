@@ -13,6 +13,7 @@ import com.avinash.project.uber.uberApp.services.RiderService;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 @Data
@@ -31,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional                //// it will ensure either all statements of the method(signUp) will run or not any and roll back to initial position(like transaction => complete or roll-back)
     public UserDto signUp(SignUpDto signUpDto) {
 
         User user = userRepository.findByEmail(signUpDto.getEmail());

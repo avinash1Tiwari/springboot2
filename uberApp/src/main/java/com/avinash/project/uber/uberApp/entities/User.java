@@ -26,5 +26,10 @@ public class User {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "user_role_mapping",              // ✅ Custom name for the mapping table
+            joinColumns = @JoinColumn(name = "user_id")
+    )
+    @Column(name = "user_roles")
     private Set<Role> user_roles;
 }

@@ -26,5 +26,6 @@ public class Driver {
     private Boolean is_available;
 
     @Column(columnDefinition = "Geometry(Point,4326)" )         // 4326 specifies we are talking about earth geometry
-    Point currentLocation;
+    Point currentLocation;    //(camelCase)
+//    current_location  => cabab case
 }
