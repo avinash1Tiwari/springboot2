@@ -1,10 +1,15 @@
 package com.avinash.project.uber.uberApp.entities;
 
+
 import com.avinash.project.uber.uberApp.entities.enums.PaymentMethod;
 import com.avinash.project.uber.uberApp.entities.enums.RideRequestStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
@@ -19,10 +24,12 @@ public class RideRequest {
     private Long id;
 
 
-    @Column(columnDefinition = "Geometry(Point,4326)")
+    @Column(columnDefinition = "GEOMETRY(Point,4326)")
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
     private Point pickupLocation;
 
-    @Column(columnDefinition = "Geometry(Point,4326)")
+    @Column(columnDefinition = "GEOMETRY(Point,4326)")
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
     private Point dropOffLocation;
 
     @CreationTimestamp
@@ -38,6 +45,5 @@ public class RideRequest {
 
     @Enumerated(EnumType.STRING)
     private RideRequestStatus rideRequestStatus;
-
 
 }

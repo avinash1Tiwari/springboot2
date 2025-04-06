@@ -3,12 +3,13 @@ package com.avinash.project.uber.uberApp.services;
 import com.avinash.project.uber.uberApp.dto.DriverDto;
 import com.avinash.project.uber.uberApp.dto.RideDto;
 import com.avinash.project.uber.uberApp.dto.RiderDto;
+import com.avinash.project.uber.uberApp.entities.Drivers;
 
 import java.util.List;
 
 public interface DriverService {
 
-    RiderDto acceptRide(Long rideId);
+    RideDto acceptRide(Long rideReqId);
 
     RiderDto cancelRide(Long rideId);
 
@@ -21,6 +22,8 @@ public interface DriverService {
     DriverDto getMyProfile();
 
     List<RideDto> getAllMyRides();
+
+    Drivers getCurrentDriver();
 
 
 }

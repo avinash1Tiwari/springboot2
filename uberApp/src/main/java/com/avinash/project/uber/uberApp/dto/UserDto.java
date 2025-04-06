@@ -1,9 +1,8 @@
 package com.avinash.project.uber.uberApp.dto;
 
-import com.avinash.project.uber.uberApp.entities.enums.Role;
-import lombok.*;
-
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data

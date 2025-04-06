@@ -2,14 +2,15 @@ package com.avinash.project.uber.uberApp.entities;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
 @Entity
 @Data
 @RequiredArgsConstructor
 
-public class Driver {
+public class Drivers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

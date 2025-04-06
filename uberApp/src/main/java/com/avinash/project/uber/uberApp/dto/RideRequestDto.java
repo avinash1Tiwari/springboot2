@@ -1,8 +1,11 @@
 package com.avinash.project.uber.uberApp.dto;
+
 import com.avinash.project.uber.uberApp.entities.enums.PaymentMethod;
 import com.avinash.project.uber.uberApp.entities.enums.RideRequestStatus;
-import lombok.*;
-import org.locationtech.jts.geom.Point;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 
@@ -21,6 +24,8 @@ public class RideRequestDto {
     private LocalDateTime requestedTime;
 
     private RiderDto rider;
+
+     private Double fare;
 
     private PaymentMethod paymentMethod;
 

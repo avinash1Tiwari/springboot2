@@ -1,7 +1,7 @@
 package com.avinash.project.uber.uberApp.strategies.impl;
 
 
-import com.avinash.project.uber.uberApp.entities.Driver;
+import com.avinash.project.uber.uberApp.entities.Drivers;
 import com.avinash.project.uber.uberApp.entities.RideRequest;
 import com.avinash.project.uber.uberApp.repositories.DriverRepository;
 import com.avinash.project.uber.uberApp.strategies.DriverMatchingStrategy;
@@ -18,7 +18,7 @@ public class DriverMatchingHighestRatedDriverStrategy implements DriverMatchingS
     private final DriverRepository driverRepository;
 
     @Override
-    public List<Driver> findMatchingDriver(RideRequest rideRequest) {
+    public List<Drivers> findMatchingDriver(RideRequest rideRequest) {
         return driverRepository.findTenTopRatedDriversNearBy(rideRequest.getPickupLocation());
     }
 }
