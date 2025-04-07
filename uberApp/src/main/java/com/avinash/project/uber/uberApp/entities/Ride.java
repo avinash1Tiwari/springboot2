@@ -1,16 +1,20 @@
 package com.avinash.project.uber.uberApp.entities;
 
 import com.avinash.project.uber.uberApp.entities.enums.PaymentMethod;
-import com.avinash.project.uber.uberApp.entities.enums.RideRequestStatus;
+import com.avinash.project.uber.uberApp.entities.enums.RideStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ride {
@@ -35,12 +39,16 @@ public class Ride {
     @ManyToOne(fetch = FetchType.LAZY)
     private Rider rider;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Drivers driver;
+
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
-    private RideRequestStatus rideStatus;
+    private RideStatus rideStatus;
 
+    private String otp;
 
     private Double fare;
    private LocalDateTime startedAt;

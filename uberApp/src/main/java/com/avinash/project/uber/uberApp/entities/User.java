@@ -2,7 +2,9 @@ package com.avinash.project.uber.uberApp.entities;
 
 import com.avinash.project.uber.uberApp.entities.enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
@@ -26,5 +28,10 @@ public class User {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "user_role_mapping",              // ✅ Custom name for the mapping table
+            joinColumns = @JoinColumn(name = "user_id")
+    )
+    @Column(name = "user_roles")
     private Set<Role> user_roles;
 }

@@ -2,14 +2,15 @@ package com.avinash.project.uber.uberApp.entities;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
 @Entity
 @Data
 @RequiredArgsConstructor
 
-public class Driver {
+public class Drivers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +27,6 @@ public class Driver {
     private Boolean is_available;
 
     @Column(columnDefinition = "Geometry(Point,4326)" )         // 4326 specifies we are talking about earth geometry
-    Point currentLocation;
+    Point currentLocation;    //(camelCase)
+//    current_location  => cabab case
 }

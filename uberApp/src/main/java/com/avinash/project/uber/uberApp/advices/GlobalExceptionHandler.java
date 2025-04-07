@@ -3,7 +3,8 @@ package com.avinash.project.uber.uberApp.advices;
 
 import com.avinash.project.uber.uberApp.exceptions.ResourceNotFoundException;
 import com.avinash.project.uber.uberApp.exceptions.RuntimeConflictException;
-import lombok.*;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -1,6 +1,8 @@
 package com.avinash.project.uber.uberApp.advices;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;

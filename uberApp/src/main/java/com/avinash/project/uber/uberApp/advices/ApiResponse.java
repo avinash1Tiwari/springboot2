@@ -1,10 +1,9 @@
 package com.avinash.project.uber.uberApp.advices;
 
-import lombok.*;
-import org.springframework.cglib.core.Local;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 
 @Data
