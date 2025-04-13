@@ -18,23 +18,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ride {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @Column(columnDefinition = "Geometry(Point,4326)")
+    @Column(columnDefinition = "Geometry(Point, 4326)")
     private Point pickupLocation;
 
-    @Column(columnDefinition = "Geometry(Point,4326)")
+    @Column(columnDefinition = "Geometry(Point, 4326)")
     private Point dropOffLocation;
 
     @CreationTimestamp
     private LocalDateTime createdTime;
-
-    @CreationTimestamp
-    private LocalDateTime rideRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Rider rider;
@@ -51,8 +46,11 @@ public class Ride {
     private String otp;
 
     private Double fare;
-   private LocalDateTime startedAt;
-   private LocalDateTime endedAt;
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
+
+
+
 
 
 }

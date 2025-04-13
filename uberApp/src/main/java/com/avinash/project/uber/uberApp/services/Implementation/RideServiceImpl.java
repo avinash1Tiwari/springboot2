@@ -6,7 +6,8 @@ import com.avinash.project.uber.uberApp.entities.Ride;
 import com.avinash.project.uber.uberApp.entities.RideRequest;
 import com.avinash.project.uber.uberApp.entities.enums.RideRequestStatus;
 import com.avinash.project.uber.uberApp.entities.enums.RideStatus;
-import com.avinash.project.uber.uberApp.repositories.RideReository;
+import com.avinash.project.uber.uberApp.exceptions.ResourceNotFoundException;
+import com.avinash.project.uber.uberApp.repositories.RideRepository;
 import com.avinash.project.uber.uberApp.services.RideRequestService;
 import com.avinash.project.uber.uberApp.services.RideService;
 import lombok.Data;
@@ -27,11 +28,13 @@ public class RideServiceImpl implements RideService {
 
     private final ModelMapper modelMapper;
 
-    private final RideReository rideReository;
+    private final RideRepository rideRepository;
+
+
 
     @Override
     public Ride getRideById(Long rideId) {
-        return null;
+       return rideRepository.findById(rideId).orElseThrow(()-> new ResourceNotFoundException("ride with given rideId not present"));
     }
 
     @Override
@@ -53,15 +56,17 @@ public class RideServiceImpl implements RideService {
 
         rideRequestService.update(rideRequest);
 
-        return rideReository.save(ride);
+        return rideRepository.save(ride);
 
     }
 
 
 
     @Override
-    public Ride updateRideStatus(Long rideId, RideStatus rideStatus) {
-        return null;
+    public Ride updateRideStatus(Ride ride, RideStatus rideStatus) {
+        ride.setRideStatus(rideStatus);
+        return rideRepository.save(ride);
+
     }
 
     @Override
