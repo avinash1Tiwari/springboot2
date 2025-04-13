@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 
 @Repository
-public interface RideRequestRepository extends JpaRepository<RideRequest,Long> {
+public interface RideRequestRepository extends JpaRepository<RideRequest, Long> {
 
     @Modifying
     @Transactional

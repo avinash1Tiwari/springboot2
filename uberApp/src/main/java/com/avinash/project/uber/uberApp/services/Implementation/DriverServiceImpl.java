@@ -14,16 +14,19 @@ import com.avinash.project.uber.uberApp.repositories.DriverRepository;
 import com.avinash.project.uber.uberApp.services.DriverService;
 import com.avinash.project.uber.uberApp.services.RideRequestService;
 import com.avinash.project.uber.uberApp.services.RideService;
+import com.avinash.project.uber.uberApp.utils.DriverUtils;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Data
@@ -37,18 +40,20 @@ public class DriverServiceImpl implements DriverService {
     private final RideService rideService;
 
     ModelMapper modelMapper = new ModelMapper();
+    private final DriverUtils driverUtils;
+
 
     @Override
     @Transactional
     public RideDto acceptRide(Long rideReqId) {
         RideRequest rideRequest = rideRequestService.findRideRequestById(rideReqId);
 
-        if(!rideRequest.getRideRequestStatus().equals(RideRequestStatus.PENDING)) {
-            throw new RuntimeException("RideRequest cannot be accepted, status is "+ rideRequest.getRideRequestStatus());
+        if (!rideRequest.getRideRequestStatus().equals(RideRequestStatus.PENDING)) {
+            throw new RuntimeException("RideRequest cannot be accepted, status is " + rideRequest.getRideRequestStatus());
         }
 
         Drivers currentDriver = getCurrentDriver();
-        if(!currentDriver.getIs_available()) {
+        if (!currentDriver.getIs_available()) {
             throw new RuntimeException("Driver cannot accept ride due to unavailability");
         }
 
@@ -88,15 +93,54 @@ public class DriverServiceImpl implements DriverService {
         rideDto.setStartedAt(ride.getStartedAt());
         rideDto.setEndedAt(ride.getEndedAt());
 //        -----------------------------------
-return rideDto;
+        return rideDto;
     }
+
+
+
 
 
 
     @Override
-    public RiderDto cancelRide(Long rideId) {
-        return null;
+    public RideDto cancelRide(Long rideId) {
+//       1. get ride
+        Ride ride = rideService.getRideById(rideId);
+
+//      2 to check if same driver is starting
+        Drivers driver = getCurrentDriver();
+
+        if (!driver.equals(ride.getDriver())) {
+            throw new RuntimeException("Driver can not cancel the ride as he has not accepted it earlier");
+//            TODO : change it unauthorised-exception
+        }
+
+//        ride is cancelled only if it is CONFIRMED
+        if(!ride.getRideStatus().equals(RideStatus.CONFIRMED))
+        {
+            throw new RuntimeException("ride can not be cancelled, invalid status: " + ride.getRideStatus());
+        }
+
+//        cancel the ride
+        Ride savedRide = rideService.updateRideStatus(ride,RideStatus.CANCELLED);
+
+//        once driver cancels => he/she is available again
+        driver.setIs_available(true);
+        driverRepository.save(driver);
+
+        Point pickup = savedRide.getPickupLocation();
+        Point dropOff = savedRide.getDropOffLocation();
+        savedRide.setPickupLocation(null);
+        savedRide.setDropOffLocation(null);
+        RideDto rideDto = modelMapper.map(savedRide, RideDto.class);
+        PointDto pickupDto = new PointDto("Point", new double[]{pickup.getX(), pickup.getY()});
+        rideDto.setPickupLocation(pickupDto);
+        PointDto dropOffDto = new PointDto("Point", new double[]{dropOff.getX(), dropOff.getY()});
+        rideDto.setDropOffLocation(dropOffDto);
+        rideDto.setOtp(null);
+        return rideDto;
     }
+
+
 
     @Override
     @Transactional
@@ -107,28 +151,24 @@ return rideDto;
         Drivers driver = getCurrentDriver();
 
 //        2 to check if same driver is starting
-        if(!driver.equals(ride.getDriver()))
-        {
+        if (!driver.equals(ride.getDriver())) {
             throw new RuntimeException("Driver can not start the ride as he has not accepted it earlier");
         }
 
 //        3.start only if ride is confirmed
-        System.out.println("=============================================statuss 000000000000000000000000000   :  " +RideStatus.ONGOING + "==========================================================" );
 
-        if(!ride.getRideStatus().equals(RideStatus.CONFIRMED))
-        {
+        if (!ride.getRideStatus().equals(RideStatus.CONFIRMED)) {
             throw new RuntimeException("Ride status is not confirmed , hence can not be started , status : " + ride.getRideStatus());
         }
 
 //        4. check otp
-        if(!ride.getOtp().equals(otp))
-        {
+        if (!ride.getOtp().equals(otp)) {
             throw new RuntimeException("OTP is not valid , otp : " + ride.getOtp());
         }
 //   5.     start the ride
-    ride.setStartedAt(LocalDateTime.now());
-        System.out.println("=============================================statuss    :  " +RideStatus.ONGOING + "==========================================================" );
-        Ride savedRide = rideService.updateRideStatus(ride,RideStatus.ONGOING);
+        ride.setStartedAt(LocalDateTime.now());
+        System.out.println("=============================================statuss    :  " + RideStatus.ONGOING + "==========================================================");
+        Ride savedRide = rideService.updateRideStatus(ride, RideStatus.ONGOING);
 
         Point pickup = savedRide.getPickupLocation();
         Point dropOff = savedRide.getDropOffLocation();
@@ -136,12 +176,12 @@ return rideDto;
         savedRide.setDropOffLocation(null);
 
 
-        RideDto rideDto =  modelMapper.map(savedRide, RideDto.class);
+        RideDto rideDto = modelMapper.map(savedRide, RideDto.class);
         PointDto pickupDto = new PointDto("Point", new double[]{pickup.getX(), pickup.getY()});
         rideDto.setPickupLocation(pickupDto);
         PointDto dropOffDto = new PointDto("Point", new double[]{dropOff.getX(), dropOff.getY()});
         rideDto.setDropOffLocation(dropOffDto);
-         return rideDto;
+        return rideDto;
     }
 
     @Override
@@ -156,12 +196,24 @@ return rideDto;
 
     @Override
     public DriverDto getMyProfile() {
-        return null;
+        Drivers currentDriver = getCurrentDriver();
+        return modelMapper.map(currentDriver,DriverDto.class);
     }
 
     @Override
-    public List<RideDto> getAllMyRides() {
-        return List.of();
+    public Page<RideDto> getAllMyRides(PageRequest pageRequest) {
+
+        Drivers currentDriver = getCurrentDriver();
+//        return rideService.getAllRidesOfDriver(currentDriver.getId(),pageRequest).map(
+//                ride ->{
+//                    return driverUtils.converRideTorideDto(ride);
+//                }
+//        );
+        return rideService.getAllRidesOfDriver(currentDriver,pageRequest).map(
+                driverUtils::converRideTorideDto
+        );
+
+
     }
 
 
@@ -170,6 +222,12 @@ return rideDto;
 
 //        currently we are fetching default driver with Id 2
 //        TODO : current driver will be fetched on implementing springSecurity
-       return driverRepository.findById(5L).orElseThrow(()-> new ResourceNotFoundException("Current Driver not found"));
+        return driverRepository.findById(5L).orElseThrow(() -> new ResourceNotFoundException("Current Driver not found"));
+    }
+
+    @Override
+    public void updateDriverAvailability(Drivers driver, boolean available) {
+        driver.setIs_available(available);
+        driverRepository.save(driver);
     }
 }

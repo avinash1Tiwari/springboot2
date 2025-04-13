@@ -13,6 +13,7 @@ import lombok.Setter;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RiderDto {
 
+    private Long id;
     private UserDto userDto;
     private Double rating;
 }

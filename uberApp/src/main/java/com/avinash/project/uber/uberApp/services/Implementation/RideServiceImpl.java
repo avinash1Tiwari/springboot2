@@ -4,6 +4,7 @@ package com.avinash.project.uber.uberApp.services.Implementation;
 import com.avinash.project.uber.uberApp.entities.Drivers;
 import com.avinash.project.uber.uberApp.entities.Ride;
 import com.avinash.project.uber.uberApp.entities.RideRequest;
+import com.avinash.project.uber.uberApp.entities.Rider;
 import com.avinash.project.uber.uberApp.entities.enums.RideRequestStatus;
 import com.avinash.project.uber.uberApp.entities.enums.RideStatus;
 import com.avinash.project.uber.uberApp.exceptions.ResourceNotFoundException;
@@ -31,23 +32,18 @@ public class RideServiceImpl implements RideService {
     private final RideRepository rideRepository;
 
 
-
     @Override
     public Ride getRideById(Long rideId) {
-       return rideRepository.findById(rideId).orElseThrow(()-> new ResourceNotFoundException("ride with given rideId not present"));
+        return rideRepository.findById(rideId).orElseThrow(() -> new ResourceNotFoundException("ride with given rideId not present"));
     }
 
-    @Override
-    public void mathWithDriver(RideRequest rideRequest) {
-
-    }
 
     @Override
     public Ride createNewRide(RideRequest rideRequest, Drivers driver) {
 
         rideRequest.setRideRequestStatus(RideRequestStatus.CONFIRMED);
 
-        Ride ride = modelMapper.map(rideRequest,Ride.class);
+        Ride ride = modelMapper.map(rideRequest, Ride.class);
 
         ride.setRideStatus(RideStatus.CONFIRMED);
         ride.setDriver(driver);
@@ -61,7 +57,6 @@ public class RideServiceImpl implements RideService {
     }
 
 
-
     @Override
     public Ride updateRideStatus(Ride ride, RideStatus rideStatus) {
         ride.setRideStatus(rideStatus);
@@ -70,13 +65,13 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public Page<Ride> getAllRidesOfRider(Long riderId, PageRequest pageRequest) {
-        return null;
+    public Page<Ride> getAllRidesOfRider(Rider rider, PageRequest pageRequest) {
+        return rideRepository.findByRider(rider,pageRequest);
     }
 
     @Override
-    public Page<Ride> getAllRidesOfDriver(Long driverId, PageRequest pageRequest) {
-        return null;
+    public Page<Ride> getAllRidesOfDriver(Drivers driver, PageRequest pageRequest) {
+       return rideRepository.findByDriver(driver,pageRequest);
     }
 
     private String generateRandomOTP() {
@@ -84,6 +79,6 @@ public class RideServiceImpl implements RideService {
 
         int otpInt = random.nextInt(10000);          /// generate a random number in range(0,10000);
 
-        return String.format("%04d",otpInt);             //// it converts otpInt generate to always in four chars   Ex => otpInt = 12 =>   String.format("%04d",otpInt);  => "0014"
+        return String.format("%04d", otpInt);             //// it converts otpInt generate to always in four chars   Ex => otpInt = 12 =>   String.format("%04d",otpInt);  => "0014"
     }
 }

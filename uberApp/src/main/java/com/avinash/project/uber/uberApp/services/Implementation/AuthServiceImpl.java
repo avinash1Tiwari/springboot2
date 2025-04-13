@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+
 @Data
 @RequiredArgsConstructor
 @Service
@@ -32,12 +33,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional                //// it will ensure either all statements of the method(signUp) will run or not any and roll back to initial position(like transaction => complete or roll-back)
+    @Transactional
+    //// it will ensure either all statements of the method(signUp) will run or not any and roll back to initial position(like transaction => complete or roll-back)
     public UserDto signUp(SignUpDto signUpDto) {
 
         User user = userRepository.findByEmail(signUpDto.getEmail());
-        if(user != null)
-            throw new RuntimeConflictException("Cannot signup, User already exists with email "+signUpDto.getEmail());
+        if (user != null)
+            throw new RuntimeConflictException("Cannot signup, User already exists with email " + signUpDto.getEmail());
 
         User mappedUser = modelMapper.map(signUpDto, User.class);
         mappedUser.setUser_roles(Set.of(Role.RIDER));

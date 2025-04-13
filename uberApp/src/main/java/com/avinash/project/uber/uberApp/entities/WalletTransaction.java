@@ -34,7 +34,8 @@ public class WalletTransaction {
 
 
     @ManyToOne
-    private Wallet wallet;           ////multiple transaction can belong to a single Wallet
+    private Wallet wallet;
+    /// /multiple transaction can belong to a single Wallet
 
 
     @CreationTimestamp

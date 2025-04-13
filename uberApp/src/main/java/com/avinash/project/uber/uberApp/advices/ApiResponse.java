@@ -16,19 +16,18 @@ public class ApiResponse<T> {
     private T data;
 
     private ApiError error;
-    public ApiResponse()
-    {
+
+    public ApiResponse() {
         this.timestamp = LocalDate.now();
 
     }
 
-    public ApiResponse(T data){
+    public ApiResponse(T data) {
         this();
         this.data = data;
     }
 
-    public ApiResponse(ApiError error)
-    {
+    public ApiResponse(ApiError error) {
         this();
         this.error = error;
     }

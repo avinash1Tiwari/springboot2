@@ -16,7 +16,8 @@ public class Rider {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")                      //// in Rider table, column name = user_id = primary key of User-table.
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    //// in Rider table, column name = user_id = primary key of User-table.
     private User user;
 
     private Double rating;

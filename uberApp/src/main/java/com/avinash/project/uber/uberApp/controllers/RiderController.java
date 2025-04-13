@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class RiderController {
 
 
-private final RiderService riderService;
+    private final RiderService riderService;
 
 
     @PostMapping("/requestRide")
-    public ResponseEntity<ApiResponse<RideRequestDto>> requestRide(@RequestBody RideRequestDto rideRequestDto)
-    {
+    public ResponseEntity<ApiResponse<RideRequestDto>> requestRide(@RequestBody RideRequestDto rideRequestDto) {
         return riderService.requestRide(rideRequestDto);
     }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DriverMatchingStrategy {
 
-       List<Drivers> findMatchingDriver(RideRequest rideRequest);                   ///in interface, all methods are kept in public
+    List<Drivers> findMatchingDriver(RideRequest rideRequest);                   ///in interface, all methods are kept in public
 }

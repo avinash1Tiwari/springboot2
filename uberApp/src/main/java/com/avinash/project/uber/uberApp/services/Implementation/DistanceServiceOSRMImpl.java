@@ -1,7 +1,6 @@
 package com.avinash.project.uber.uberApp.services.Implementation;
 
 
-
 import com.avinash.project.uber.uberApp.services.DistanceService;
 import lombok.Data;
 import org.locationtech.jts.geom.Point;
@@ -31,7 +30,7 @@ public class DistanceServiceOSRMImpl implements DistanceService {
 
             return responseDto.getRoutes().get(0).getDistance() / 1000.0;
         } catch (Exception e) {
-            throw new RuntimeException("Error getting data from OSRM "+e.getMessage());
+            throw new RuntimeException("Error getting data from OSRM " + e.getMessage());
         }
     }
 }

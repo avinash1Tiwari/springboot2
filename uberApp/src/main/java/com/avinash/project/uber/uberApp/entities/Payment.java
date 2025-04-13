@@ -17,21 +17,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Payment {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-   @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Ride ride;
 
-   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-   private Double amount;
+    private Double amount;
 
-   @CreationTimestamp
+    @CreationTimestamp
     private LocalDateTime paymentTime;
 }

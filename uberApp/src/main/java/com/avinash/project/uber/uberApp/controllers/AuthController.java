@@ -14,13 +14,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    UserDto signUp(@RequestBody SignUpDto signUpDto){
+    UserDto signUp(@RequestBody SignUpDto signUpDto) {
         return authService.signUp(signUpDto);
     }
 
     @GetMapping("check-health")
-    String checkHealth()
-    {
+    String checkHealth() {
         return "server is running fine";
     }
 }

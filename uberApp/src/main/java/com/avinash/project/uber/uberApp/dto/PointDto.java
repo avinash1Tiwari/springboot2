@@ -11,9 +11,10 @@ public class PointDto {
     private double[] coordinates;
     private String type = "Point";
 
-    public PointDto(double[] coordinates){
+    public PointDto(double[] coordinates) {
         this.coordinates = coordinates;
     }
+
     public PointDto(String type, double[] coordinates) {
         this.type = type;
         this.coordinates = coordinates;
