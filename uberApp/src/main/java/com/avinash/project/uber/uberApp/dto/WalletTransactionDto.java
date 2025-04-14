@@ -1,23 +1,22 @@
-package com.avinash.project.uber.uberApp.entities;
+package com.avinash.project.uber.uberApp.dto;
 
+import com.avinash.project.uber.uberApp.entities.Ride;
+import com.avinash.project.uber.uberApp.entities.Wallet;
 import com.avinash.project.uber.uberApp.entities.enums.TransactionMethod;
 import com.avinash.project.uber.uberApp.entities.enums.TransactionType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class WalletTransaction {
+@Data
+@Builder
+public class WalletTransactionDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     private Double amount;
@@ -26,17 +25,14 @@ public class WalletTransaction {
 
     private TransactionMethod transactionMethod;
 
-    @OneToOne
-    private Ride ride;
+
+    private RideDto rideDto;
 
     private String transactionId;
 
 
-    @ManyToOne
-    private Wallet wallet;
-    /// /multiple transaction can belong to a single Wallet
+    private WalletDto walletDto;
 
 
-    @CreationTimestamp
     private LocalDateTime timeStamp;
 }
