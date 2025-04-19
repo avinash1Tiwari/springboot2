@@ -3,18 +3,18 @@ package com.avinash.project.uber.uberApp.entities;
 import com.avinash.project.uber.uberApp.entities.enums.TransactionMethod;
 import com.avinash.project.uber.uberApp.entities.enums.TransactionType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class WalletTransaction {
 
     @Id
@@ -25,6 +25,7 @@ public class WalletTransaction {
 
     private TransactionType transactionType;
 
+    @Enumerated(EnumType.STRING)
     private TransactionMethod transactionMethod;
 
     @OneToOne
@@ -34,7 +35,8 @@ public class WalletTransaction {
 
 
     @ManyToOne
-    private Wallet wallet;           ////multiple transaction can belong to a single Wallet
+    private Wallet wallet;
+    /// /multiple transaction can belong to a single Wallet
 
 
     @CreationTimestamp

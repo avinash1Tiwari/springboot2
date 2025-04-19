@@ -1,13 +1,11 @@
 package com.avinash.project.uber.uberApp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +16,8 @@ public class Rider {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")                      //// in Rider table, column name = user_id = primary key of User-table.
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    //// in Rider table, column name = user_id = primary key of User-table.
     private User user;
 
     private Double rating;

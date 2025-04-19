@@ -17,7 +17,8 @@ public class Drivers {
     private Long id;
 
     @OneToOne
-    @CollectionTable(name = "user_role_mapping", joinColumns = @JoinColumn(name = "user_id"))               //// in Driver table, column name = user_id = primary key of User-table.
+    @CollectionTable(name = "user_role_mapping", joinColumns = @JoinColumn(name = "user_id"))
+    //// in Driver table, column name = user_id = primary key of User-table.
     private User user;
 
     private Double rating;
@@ -26,7 +27,7 @@ public class Drivers {
 
     private Boolean is_available;
 
-    @Column(columnDefinition = "Geometry(Point,4326)" )         // 4326 specifies we are talking about earth geometry
+    @Column(columnDefinition = "Geometry(Point,4326)")         // 4326 specifies we are talking about earth geometry
     Point currentLocation;    //(camelCase)
 //    current_location  => cabab case
 }

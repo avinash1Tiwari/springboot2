@@ -9,6 +9,7 @@ import com.avinash.project.uber.uberApp.exceptions.RuntimeConflictException;
 import com.avinash.project.uber.uberApp.repositories.UserRepository;
 import com.avinash.project.uber.uberApp.services.AuthService;
 import com.avinash.project.uber.uberApp.services.RiderService;
+import com.avinash.project.uber.uberApp.services.WalletService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+
 @Data
 @RequiredArgsConstructor
 @Service
@@ -25,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RiderService riderService;
     private final ModelMapper modelMapper;
+    private final WalletService walletService;
 
     @Override
     public String login(String username, String password) {
@@ -32,12 +35,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional                //// it will ensure either all statements of the method(signUp) will run or not any and roll back to initial position(like transaction => complete or roll-back)
+    @Transactional
+    //// it will ensure either all statements of the method(signUp) will run or not any and roll back to initial position(like transaction => complete or roll-back)
     public UserDto signUp(SignUpDto signUpDto) {
 
         User user = userRepository.findByEmail(signUpDto.getEmail());
-        if(user != null)
-            throw new RuntimeConflictException("Cannot signup, User already exists with email "+signUpDto.getEmail());
+        if (user != null)
+            throw new RuntimeConflictException("Cannot signup, User already exists with email " + signUpDto.getEmail());
 
         User mappedUser = modelMapper.map(signUpDto, User.class);
         mappedUser.setUser_roles(Set.of(Role.RIDER));
@@ -45,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
 
 //        create user related entities
         riderService.createNewRider(savedUser);
-//        TODO add wallet related service here
+        walletService.createWallet(savedUser);
 
         return modelMapper.map(savedUser, UserDto.class);
     }

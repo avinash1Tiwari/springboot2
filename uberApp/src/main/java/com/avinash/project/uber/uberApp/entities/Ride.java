@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
@@ -18,23 +20,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ride {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @Column(columnDefinition = "Geometry(Point,4326)")
+    @Column(columnDefinition = "Geometry(Point, 4326)")
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
     private Point pickupLocation;
 
-    @Column(columnDefinition = "Geometry(Point,4326)")
+    @Column(columnDefinition = "Geometry(Point, 4326)")
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
     private Point dropOffLocation;
 
     @CreationTimestamp
     private LocalDateTime createdTime;
-
-    @CreationTimestamp
-    private LocalDateTime rideRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Rider rider;
@@ -51,8 +50,25 @@ public class Ride {
     private String otp;
 
     private Double fare;
-   private LocalDateTime startedAt;
-   private LocalDateTime endedAt;
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
 
+    @Override
+    public String toString() {
+        return "Ride{" +
+                "id=" + id +
+                ", pickupLocation=" + (pickupLocation != null ? pickupLocation.toText() : "null") +
+                ", dropOffLocation=" + (dropOffLocation != null ? dropOffLocation.toText() : "null") +
+                ", createdTime=" + createdTime +
+                ", riderId=" + (rider != null ? rider.getId() : "null") +
+                ", driverId=" + (driver != null ? driver.getId() : "null") +
+                ", paymentMethod=" + paymentMethod +
+                ", rideStatus=" + rideStatus +
+                ", otp='" + otp + '\'' +
+                ", fare=" + fare +
+                ", startedAt=" + startedAt +
+                ", endedAt=" + endedAt +
+                '}';
+    }
 
 }

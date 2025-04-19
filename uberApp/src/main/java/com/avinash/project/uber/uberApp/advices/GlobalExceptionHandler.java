@@ -19,22 +19,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
- @ExceptionHandler(ResourceNotFoundException.class)
- public ResponseEntity<ApiResponse<?>> handleResourceNotFound(ResourceNotFoundException exception)
- {
-     ApiError apiError = ApiError.builder()
-             .status(HttpStatus.NOT_FOUND)
-             .message(exception.getMessage())
-             .build();
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<?>> handleResourceNotFound(ResourceNotFoundException exception) {
+        ApiError apiError = ApiError.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .message(exception.getMessage())
+                .build();
 
-     return buildErrorResponseEntity(apiError);
- }
-
+        return buildErrorResponseEntity(apiError);
+    }
 
 
     @ExceptionHandler(RuntimeConflictException.class)
-    public ResponseEntity<ApiResponse<?>> handleRuntimeConflictException(RuntimeConflictException exception)
-    {
+    public ResponseEntity<ApiResponse<?>> handleRuntimeConflictException(RuntimeConflictException exception) {
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.CONFLICT)
                 .message(exception.getMessage())
@@ -44,10 +41,8 @@ public class GlobalExceptionHandler {
     }
 
 
-
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<?>> handleInternalServerError(Exception exception)
-    {
+    public ResponseEntity<ApiResponse<?>> handleInternalServerError(Exception exception) {
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message(exception.getMessage())
@@ -57,11 +52,8 @@ public class GlobalExceptionHandler {
     }
 
 
-
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?>> handleInputValidationError(MethodArgumentNotValidException exception)
-    {
+    public ResponseEntity<ApiResponse<?>> handleInputValidationError(MethodArgumentNotValidException exception) {
 
         List<String> errors = exception
                 .getBindingResult()
@@ -81,11 +73,8 @@ public class GlobalExceptionHandler {
     }
 
 
-
-
-
-    public ResponseEntity<ApiResponse<?>> buildErrorResponseEntity(ApiError apiError){
-        return new ResponseEntity<>(new ApiResponse<>(apiError),apiError.getStatus());
+    public ResponseEntity<ApiResponse<?>> buildErrorResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(new ApiResponse<>(apiError), apiError.getStatus());
 
     }
 }

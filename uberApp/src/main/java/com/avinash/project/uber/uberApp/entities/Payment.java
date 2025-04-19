@@ -4,34 +4,34 @@ package com.avinash.project.uber.uberApp.entities;
 import com.avinash.project.uber.uberApp.entities.enums.PaymentMethod;
 import com.avinash.project.uber.uberApp.entities.enums.PaymentStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Payment {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-   @OneToOne(fetch = FetchType.LAZY)
-    private Ride ride;
+    @OneToOne
+    private Ride ride;                                                    /////(fetch = FetchType.LAZY)
 
-   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-   private Double amount;
+    private Double amount;
 
-   @CreationTimestamp
+    @CreationTimestamp
     private LocalDateTime paymentTime;
 }

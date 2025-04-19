@@ -13,6 +13,7 @@ import org.hibernate.type.SqlTypes;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
