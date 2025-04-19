@@ -33,6 +33,8 @@ public class DriverUtils {
         rideDto.setPickupLocation(pickupDto);
         PointDto dropOffDto = new PointDto("Point", new double[]{dropOff.getX(), dropOff.getY()});
         rideDto.setDropOffLocation(dropOffDto);
+        savedRide.setPickupLocation(pickup);
+        savedRide.setDropOffLocation(dropOff);
         return rideDto;
     }
 }

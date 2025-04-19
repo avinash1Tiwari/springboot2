@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class WalletTransaction {
 
     @Id
@@ -24,6 +25,7 @@ public class WalletTransaction {
 
     private TransactionType transactionType;
 
+    @Enumerated(EnumType.STRING)
     private TransactionMethod transactionMethod;
 
     @OneToOne

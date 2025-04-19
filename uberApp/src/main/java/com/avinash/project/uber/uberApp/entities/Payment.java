@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Payment {
 
     @Id
@@ -23,8 +24,8 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Ride ride;
+    @OneToOne
+    private Ride ride;                                                    /////(fetch = FetchType.LAZY)
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;

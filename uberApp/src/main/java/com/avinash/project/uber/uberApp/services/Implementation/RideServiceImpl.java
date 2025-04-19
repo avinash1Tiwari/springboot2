@@ -34,7 +34,9 @@ public class RideServiceImpl implements RideService {
 
     @Override
     public Ride getRideById(Long rideId) {
-        return rideRepository.findById(rideId).orElseThrow(() -> new ResourceNotFoundException("ride with given rideId not present"));
+        Ride ride =  rideRepository.findById(rideId).orElseThrow(() -> new ResourceNotFoundException("ride with given rideId not present"));
+        System.out.println(ride.toString());
+        return ride;
     }
 
 
@@ -51,9 +53,10 @@ public class RideServiceImpl implements RideService {
         ride.setId(null);
 
         rideRequestService.update(rideRequest);
-
-        return rideRepository.save(ride);
-
+        System.out.println(ride.toString());
+        Ride response =  rideRepository.save(ride);
+        System.out.println(response.toString());
+        return response;
     }
 
 

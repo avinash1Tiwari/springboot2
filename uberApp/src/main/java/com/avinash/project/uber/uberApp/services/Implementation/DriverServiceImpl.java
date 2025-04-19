@@ -11,7 +11,9 @@ import com.avinash.project.uber.uberApp.entities.enums.RideRequestStatus;
 import com.avinash.project.uber.uberApp.entities.enums.RideStatus;
 import com.avinash.project.uber.uberApp.exceptions.ResourceNotFoundException;
 import com.avinash.project.uber.uberApp.repositories.DriverRepository;
+import com.avinash.project.uber.uberApp.repositories.RideRepository;
 import com.avinash.project.uber.uberApp.services.DriverService;
+import com.avinash.project.uber.uberApp.services.PaymentService;
 import com.avinash.project.uber.uberApp.services.RideRequestService;
 import com.avinash.project.uber.uberApp.services.RideService;
 import com.avinash.project.uber.uberApp.utils.DriverUtils;
@@ -20,7 +22,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,11 @@ public class DriverServiceImpl implements DriverService {
     private final RideRequestService rideRequestService;
     private final DriverRepository driverRepository;
     private final RideService rideService;
+    private final RideRepository rideRepository;
 
     ModelMapper modelMapper = new ModelMapper();
     private final DriverUtils driverUtils;
-
+private final PaymentService paymentService;
 
     @Override
     @Transactional
@@ -61,6 +63,7 @@ public class DriverServiceImpl implements DriverService {
         Drivers savedDriver = driverRepository.save(currentDriver);
 
         Ride ride = rideService.createNewRide(rideRequest, savedDriver);
+        System.out.println(ride.toString());
 
 //        return modelMapper.map(ride, RideDto.class);
 
@@ -167,8 +170,13 @@ public class DriverServiceImpl implements DriverService {
         }
 //   5.     start the ride
         ride.setStartedAt(LocalDateTime.now());
+        ride.setRideStatus(RideStatus.ONGOING);
+        Ride savedRide = rideRepository.save(ride);
         System.out.println("=============================================statuss    :  " + RideStatus.ONGOING + "==========================================================");
-        Ride savedRide = rideService.updateRideStatus(ride, RideStatus.ONGOING);
+//        Ride savedRide = rideService.updateRideStatus(ride, RideStatus.ONGOING);
+
+//        6. create a payment object
+        paymentService.createPayment(savedRide);
 
         Point pickup = savedRide.getPickupLocation();
         Point dropOff = savedRide.getDropOffLocation();
@@ -181,12 +189,36 @@ public class DriverServiceImpl implements DriverService {
         rideDto.setPickupLocation(pickupDto);
         PointDto dropOffDto = new PointDto("Point", new double[]{dropOff.getX(), dropOff.getY()});
         rideDto.setDropOffLocation(dropOffDto);
+        savedRide.setPickupLocation(pickup);
+        savedRide.setDropOffLocation(dropOff);
+        Ride savedRide1 = rideRepository.save(ride);
         return rideDto;
     }
 
     @Override
-    public RiderDto endRide(Long rideId) {
-        return null;
+    @Transactional
+    public RideDto endRide(Long rideId) {
+
+        Ride ride = rideService.getRideById(rideId);
+        Drivers driver = getCurrentDriver();
+
+        //        2 to check if same driver is starting
+        if (!driver.equals(ride.getDriver())) {
+            throw new RuntimeException("Driver can not start the ride as he has not accepted it earlier");
+        }
+
+//        3.end only if ride is ongoing
+
+        if (!ride.getRideStatus().equals(RideStatus.ONGOING)) {
+            throw new RuntimeException("Ride status is not ONGOING , hence can not be started , status : " + ride.getRideStatus());
+        }
+
+        ride.setEndedAt(LocalDateTime.now());
+
+        Ride savedRide = rideService.updateRideStatus(ride,RideStatus.ENDED);
+        updateDriverAvailability(driver,true);
+        paymentService.processPayment(ride);
+        return driverUtils.converRideTorideDto(savedRide);
     }
 
     @Override

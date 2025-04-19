@@ -7,8 +7,6 @@ import com.avinash.project.uber.uberApp.entities.Drivers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
-
 public interface DriverService {
 
     RideDto acceptRide(Long rideReqId);
@@ -17,7 +15,7 @@ public interface DriverService {
 
     RideDto startRide(Long rideId, String otp);
 
-    RiderDto endRide(Long rideId);
+    RideDto endRide(Long rideId);
 
     RiderDto rateRider(Long rideId, Integer rating);
 
